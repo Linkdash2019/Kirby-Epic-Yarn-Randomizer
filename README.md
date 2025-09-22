@@ -2,11 +2,12 @@
 This is a W.I.P randomizer for Kirby Epic Yarn.
 It uses a Python script with the Dolphin Memory Engine to manage memory values. 
 
+## Running
 If you want to run it in its current state you'll need to get the following moduals:
 dolphin-memory-engine
 asyncio
 
-
+## Random info
 While your here have some info (don't worry if you don't understand it):
 [Randomization Ideas]
 Checks:
