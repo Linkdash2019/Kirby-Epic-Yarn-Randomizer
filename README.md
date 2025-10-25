@@ -28,9 +28,9 @@ While your here have some info (don't worry if you don't understand it):
 ### Info
 * Magic Yarn is not an item, its just an animation that plays when a boss is beaten. When a boss's door states is set to 0x03 the next world is unlocked.
 
-* Patches change a worlds terrain to allow access to certain levels.
+* Patches change a worlds terrain to allow access to certain levels. These have 3 states. 1=Locked. 2=Patch in hands. 3=Patch thrown
 
-* Doors refer to a levels door. These have 3 states. 1=Locked. 2=Unlocked. 3=Beaten
+* Doors refer to a levels door. These also have 3 states. 1=Locked. 2=Unlocked. 3=Beaten
 
 * Medals are near doors in memory. They have 4 states 0=No Medal. 1=Bronze. 2=Silver. 3=Gold
 
