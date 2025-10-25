@@ -38,7 +38,7 @@ While your here have some info (don't worry if you don't understand it):
 #### Cutscenes:
 * 0x906A962B - Welcome to Dreamland (Memory)
 * 0x906A96F7 - Welcome to Patchland (Dialog)
-* 0x906A96F7 - Magic Yarn 1 (Memory)
+* 0x906A971B - Magic Yarn 1 (Memory)
 * 0x906A973F - Meet Dom Whoole (Dialog)
 * 0x906A971B - See Kirbys Pad (Dialog)
 * 0x906A96EB - To Grass Land (Dialog)
