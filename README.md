@@ -55,4 +55,4 @@ While your here have some info (don't worry if you don't understand it):
 
 #### Misc:
 * 0x906A7007 - World Map Unlocked
-* 0x906A6FFC - Kirby Location
+* 0x906A700C - Kirby Location
