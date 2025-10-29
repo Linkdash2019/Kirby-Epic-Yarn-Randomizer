@@ -32,8 +32,7 @@ While your here have some info (don't worry if you don't understand it):
 
 * Doors refer to a levels door. These also have 3 states. 1=Locked. 2=Unlocked. 3=Beaten.
 
-* Medals are near doors in memory. They have 4 states. 0=No Medal. 1=Bronze. 2=Silver. 3=Gold. <br>(3 can also mean that the level has not been beaten yet!)
-
+* Medals are near doors in memory. They have 5 states. 255=No Medal. 0=Wood. 1=Bronze. 2=Silver. 3=Gold.
 
 ### Important Memory Values
 #### Cutscenes:
