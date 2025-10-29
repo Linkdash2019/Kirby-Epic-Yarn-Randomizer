@@ -11,14 +11,14 @@ While your here have some info (don't worry if you don't understand it):
 
 ### Randomization Ideas
  #### Checks:
-  * Level Exits
+  * Level Exits ✅
   * Chests
   * Minigame quests
   * Medals (x3)
   * Shop
 
 #### Unlocks:
-  * Doors
+  * Doors ✅
   * Quilty Court Upgrade
   * Residents
   * Patches
