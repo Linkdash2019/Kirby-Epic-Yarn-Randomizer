@@ -1,6 +1,4 @@
 import random
-#import asyncio
-#from aioconsole import ainput
 import dolphin_memory_engine as dme
 import re
 
@@ -10,9 +8,8 @@ locations = ['Patch Castle Goal', 'Fountain Gardens Goal', 'Flower Fields Goal',
 unrandom_items = items[:]
 unrandom_locations = locations[:]
 
-#seed = input('What is the seed? >>> ')
-seed = 123
-#seed = "".join(re.findall(r'\d', seed))
+seed = input('What is the seed? >>> ')
+seed = "".join(re.findall(r'\d', seed))
 random.seed(seed)
 random.shuffle(items)
 item_placement = dict(zip(locations, items))
