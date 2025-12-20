@@ -11,7 +11,7 @@ unrandom_items = items[:]
 unrandom_locations = locations[:]
 
 seed = input('What is the seed? >>> ')
-#seed = 123
+#seed = 876
 seed = "".join(re.findall(r'\d', seed))
 random.seed(seed)
 random.shuffle(items)
@@ -62,6 +62,7 @@ def check_doors():
     while hops <= 49:
         if dme.read_byte(0x906A7067+(hops*level_offset)+offset) == 3:
             unlockNextLevel(hops)
+            relockTrouble(hops+1)
         hops += 1
 
 def change_saved_location(world=0):
@@ -99,18 +100,22 @@ def unlockNextLevel(hops):
 
 #TODO
 def relockTrouble(levelNum):
-    unlock_hops = 0
-    lock_hops = 0
+    offset = 0
+    level_offset = 36
 
-    levelName = unrandom_items[levelNum]
-    for item in items:
-        if item == levelName:
-            for location in unrandom_items:
-                if location == unrandom_items[unlock_hops]:
+    if dme.read_byte(0x906A7067+(levelNum*level_offset)+offset) == 2:
+        unlock_hops = 0
+        lock_hops = 0
 
-                    return
-                lock_hops+=1
-        unlock_hops += 1
+        for item in items:
+            if item == unrandom_items[levelNum]:
+                for location in unrandom_items:
+                    if location == unrandom_items[unlock_hops]:
+                        print(unrandom_items[levelNum],"should get locked", )
+                        dme.write_byte(0x906A7067 + (levelNum * level_offset), 0x01)
+                        return
+                    lock_hops += 1
+                unlock_hops += 1
 
 def hint(levelNum):
     unlock_hops = 0
@@ -180,6 +185,7 @@ def userConsoleLoop():
                 "  -exit (Exits the randomizer cleanly)"
             )
 
+
 #--------------------------------------------------------------------------
 
 #Wait to allow Dolphin to launch
@@ -194,5 +200,5 @@ if dme.read_byte(0x906A962B) == dme.read_byte(0x906A96F7) == 0x01:
 #Begin background loop and input loop
 background = threading.Thread(target=backgroundLoop)
 main = threading.Thread(target=userConsoleLoop)
-background.start()
 main.start()
+background.start()
