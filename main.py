@@ -1,6 +1,5 @@
 import random
 import threading
-#from aioconsole import ainput
 import time
 import dolphin_memory_engine as dme
 import re
@@ -29,7 +28,9 @@ def setup():
         dme.write_byte(level, 0x03)
         hops+=1
 
-    #Cutscenes Refer to GitHub for more info
+    #Watch Cutscenes
+    #Refer to GitHub for more info
+    #TODO Finish  finding all cutscenes
     dme.write_byte(0x906A962B, 0x03)
     dme.write_byte(0x906A96F7, 0x03)
     dme.write_byte(0x906A973F, 0x03)
@@ -59,7 +60,6 @@ def check_doors():
     level_offset = 36
     
     while hops <= 49:
-        #print("Hops:",hops,"Door:",dme.read_byte(0x906A7067+(hops*level_offset)+offset), "Badge:", check_medals(hops))
         if dme.read_byte(0x906A7067+(hops*level_offset)+offset) == 3:
             unlockNextLevel(hops)
         hops += 1
@@ -71,21 +71,20 @@ def change_saved_location(world=0):
     dme.write_bytes(0x906A700C, string.encode('ascii'))
 
 def castle_portal(levelNum):
-    #UNSTABLE AND/OR BROKEN!!
-    #Change Patch castle level header to "Patch Castle"
-    #TODO figure out how to get each level
+    #Change Patch castle level header to levelNum
     level_offset = 36
     offset = 1
 
     if dme.read_byte(0x906A7067 + (levelNum * level_offset)) != 0x01:
         levelHeader = dme.read_bytes(0x906A7067 + (levelNum * level_offset) + offset, 4)
         dme.write_bytes(0x906A7067 + offset, levelHeader)
+    else:
+        print(unrandom_items[levelNum],"is not unlocked")
 
 def unlockNextLevel(hops):
     level_offset = 36
     unlock_hops = 0
 
-    
     for item in unrandom_items:
         unlock_hops += 1
         if items[hops] == item:
@@ -98,50 +97,93 @@ def unlockNextLevel(hops):
                 print(unrandom_locations[hops], "unlocked",items[hops],"\nLevel id is:", unlock_hops)
             return
 
+#TODO
+def relockTrouble(levelNum):
+    unlock_hops = 0
+    lock_hops = 0
+
+    levelName = unrandom_items[levelNum]
+    for item in items:
+        if item == levelName:
+            for location in unrandom_items:
+                if location == unrandom_items[unlock_hops]:
+
+                    return
+                lock_hops+=1
+        unlock_hops += 1
+
+def hint(levelNum):
+    unlock_hops = 0
+
+    levelName = unrandom_items[levelNum]
+    for item in items:
+        if item == levelName:
+            print("They say", unrandom_items[levelNum], "is unlocked by", locations[unlock_hops])
+        unlock_hops += 1
+
 def backgroundLoop():
     locationRadioButton = 'inLevel'
 
     while True:
         if (dme.read_bytes(0x906A7010, 4) == b'ROOM') & (locationRadioButton == 'inLevel'):
             locationRadioButton = 'onMap'
-            print("Went to World Map")
             check_doors()
         elif (dme.read_bytes(0x906A7010, 4) != b'ROOM') & (locationRadioButton == 'onMap'):
             locationRadioButton = 'inLevel'
-            print('Went to a level!')
-        elif dme.read_bytes(0x906A7010, 4) == b'EXIT':
-            return
         else:
             time.sleep(1)
+
+        if not main.is_alive():
+            dme.un_hook()
+            return
 
 def userConsoleLoop():
     while True:
         command = input('>>> ' )
         if command == 'exit':
-            location = dme.read_bytes(0x906A7010, 4)
-            dme.write_bytes(0x906A7010, b'EXIT')
-            background.join()
-            dme.write_bytes(0x906A7010, location)
-            dme.un_hook()
             return
+
         elif command == 'portal':
             try:
-                portalNum = int(input('Enter portal number (0-49): '))
+                portalNum = int(input('Enter portal number (0-48): '))
+                if portalNum > 48:
+                    print("Invalid hint. Resetting to Patch Castle.")
+                    portalNum = 0
             except ValueError:
-                print('Invalid portal number. Reseting to Patch Castle')
+                print('Invalid portal number. Resetting to Patch Castle')
                 portalNum = 0
             castle_portal(portalNum)
-        elif command == 'stuck':
-            input("Please exit to the title screen then press enter")
-            change_saved_location()
+
+        elif command == 'warp':
+            location = int(input("WARNING: Failure to follow instructions may result in a corrupt save (or worse corrupt your Wii system memory)\nPlease exit to the title screen then\nenter world number (0-6) >>> "))
+            change_saved_location(location)
             print("DONE! You can now load your file again!")
+
+        elif command == 'hint':
+            try:
+                hintNum = int(input('Enter level number (0-48): '))
+                if hintNum > 48:
+                    print("Invalid hint. Resetting to hint 0.")
+                    hintNum = 0
+            except ValueError:
+                print('Invalid hint. Resetting to hint 0.')
+                hintNum = 0
+            hint(hintNum)
+
         else:
-            print("Unknown command\nValid commands are:\n  -portal (Puts a portal at Patch Castles door\n  -stuck (Return Kirby to Quilty Square)\n  -exit (Exits the randomizer cleanly)")
+            print(
+                "Unknown command\n"
+                "Valid commands are:\n"
+                "  -portal (Puts a portal at Patch Castles door)\n"
+                "  -warp (Teleport Kirby across space)\n"
+                "  -hint (Get a spoiler/hint)\n"
+                "  -exit (Exits the randomizer cleanly)"
+            )
 
 #--------------------------------------------------------------------------
 
 #Wait to allow Dolphin to launch
-time.sleep(3)
+#time.sleep(3)
 dme.hook()
 print("Connected!")
 
@@ -154,6 +196,3 @@ background = threading.Thread(target=backgroundLoop)
 main = threading.Thread(target=userConsoleLoop)
 background.start()
 main.start()
-
-
-
