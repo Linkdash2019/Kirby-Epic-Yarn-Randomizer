@@ -5,7 +5,6 @@ import dolphin_memory_engine as dme
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
-from functools import partial
 
 items = ['Patch Castle', 'Fountain Gardens', 'Flower Fields', 'Rainbow Falls', 'Big-Bean Vine ', 'Mole Hole', 'Weird Woods', 'Pyramid Sands', 'Lava Landing', 'Cool Cave', 'Dino Jungle', 'Temper Temple', 'Dusk Dunes', 'Toy Tracks', 'Mushroom Run', 'Sweets Park', 'Melody Town', 'Cocoa Station', 'Dark Manor', 'Splash Beach', 'Blub-Blub Ocean', 'Secret Island', 'Deep-Dive Deep', 'Boom Boatyard', 'Fossil Reef', 'Snowy Fields', 'Cozy Cabin', 'Mt. Slide', 'Frosty Wheel', 'Frigid Fjords', 'Evergreen Lift', 'Future City', 'Tube Town', 'Mysterious UFO', 'Stellar Way', 'Moon Base', 'Outer Rings', "Whispy's Forest", 'Tempest Towers', 'Cloud Palace', 'Castle Dedede', 'Meta Melon Isle', 'Battleship Halberd', 'Fangora', 'Hot Wings', 'Squashini', 'Capamari', 'King Dedede', 'Meta Knight', 'Yin-Yarn']
 locations = ['Patch Castle Goal', 'Fountain Gardens Goal', 'Flower Fields Goal', 'Rainbow Falls Goal', 'Big-Bean Vine Goal', 'Mole Hole Goal', 'Weird Woods Goal', 'Pyramid Sands Goal', 'Lava Landing Goal', 'Cool Cave Goal', 'Dino Jungle Goal', 'Temper Temple Goal', 'Dusk Dunes Goal', 'Toy Tracks Goal', 'Mushroom Run Goal', 'Sweets Park Goal', 'Melody Town Goal', 'Cocoa Station Goal', 'Dark Manor Goal', 'Splash Beach Goal', 'Blub-Blub Ocean Goal', 'Secret Island Goal', 'Deep-Dive Deep Goal', 'Boom Boatyard Goal', 'Fossil Reef Goal', 'Snowy Fields Goal', 'Cozy Cabin Goal', 'Mt. Slide Goal', 'Frosty Wheel Goal', 'Frigid Fjords Goal', 'Evergreen Lift Goal', 'Future City Goal', 'Tube Town Goal', 'Mysterious UFO Goal', 'Stellar Way Goal', 'Moon Base Goal', 'Outer Rings Goal', "Whispy's Forest", 'Tempest Towers Goal', 'Cloud Palace Goal', 'Castle Dedede Goal', 'Meta Melon Isle Goal', 'Battleship Halberd Goal', 'Fangora Goal', 'Hot Wings Goal', 'Squashini Goal', 'Capamari Goal', 'King Dedede Goal', 'Meta Knight Goal']
@@ -15,34 +14,45 @@ unrandom_locations = locations[:]
 
 seed = 0
 firstItem = None
+lastUnlockedItem = "Not Initialized"
 
-def startRando():
+def startRando(inputSeed=""):
+    global lastUnlockedItem
+
     dme.hook()
     if not dme.is_hooked():
         messagebox.showerror("Error", "Could not hook Dolphin.\nCheck that Kirby Epic Yarn is running and try again.")
         return
 
+    if inputSeed == "":
+        #Random Seed
+        seedGen()
+    else:
+        #Set Seed
+        seedGen(inputSeed)
+
     # Check if file 1 is probably empty
     if dme.read_byte(0x906A962B) == dme.read_byte(0x906A96F7) == 0x01:
+        lastUnlockedItem = "Running setup"
         setup()
-    seedGen()
+    else:
+        lastUnlockedItem = "Save found on file 1\nResuming randomizer"
 
     # Spoiler Maker
     item_placement = dict(zip(locations, items))
 
     background.start()
 
-def seedGen(setSeed=int(time.time())):
+def seedGen(setSeed=str(int(time.time()))):
     global seed
     seed = setSeed
-    print(seed)
     random.seed(setSeed)
     random.shuffle(items)
     global firstItem
     firstItem = items.pop(0)
 
+#TODO Finish finding all cutscenes
 def setup():
-    print("Running Setup")
     #Unlock Badges
     hops = 0
     offset = 12
@@ -53,7 +63,6 @@ def setup():
 
     #Watch Cutscenes
     #Refer to GitHub for more info
-    #TODO Finish finding all cutscenes
     dme.write_byte(0x906A962B, 0x03)
     dme.write_byte(0x906A96F7, 0x03)
     dme.write_byte(0x906A973F, 0x03)
@@ -68,7 +77,8 @@ def setup():
     for item in unrandom_items:
         if item == firstItem:
             dme.write_byte(0x906A7067+(hops*36), 0x02)
-            print("START unlocked", item, "\nLevel id is:", hops)
+            global lastUnlockedItem
+            lastUnlockedItem = (f'START unlocked {item}')
             break
         hops += 1
 
@@ -145,7 +155,8 @@ def unlockNextLevel(hops):
                     dme.write_byte(level, 0x02)
                 else:
                     dme.write_byte(0x906A7067+(unlock_hops*level_offset), 0x02)
-                print(unrandom_locations[hops], "unlocked",items[hops],"\nLevel id is:", unlock_hops)
+                global lastUnlockedItem
+                lastUnlockedItem = (f'{unrandom_locations[hops]} unlocked {items[hops]}')
             return
         unlock_hops += 1
 
@@ -170,25 +181,24 @@ def backgroundLoop():
     while not exitEvent.is_set():
         if (dme.read_bytes(0x906A7010, 4) == b'ROOM') & (locationRadioButton == 'inLevel'):
             locationRadioButton = 'onMap'
-            change_saved_location(0x00)
+            setSelectedFile(0x00)
             check_doors()
         elif (dme.read_bytes(0x906A7010, 4) != b'ROOM') & (locationRadioButton == 'onMap'):
             locationRadioButton = 'inLevel'
-            change_saved_location(0x00)
+            setSelectedFile(0x00)
         else:
             time.sleep(1)
-    print("Background loop finished")
 
-#TODO Add seed selection.
-#     Finish hints
 def userGUILoop():
 
-    def updateSeed():
+    def updateText():
+        lastUnlockedItemtxt['text'] = lastUnlockedItem
         seedtxt['text'] = f"Seed: {seed}"
-        root.after(100, updateSeed)
+        root.after(100, updateText)
 
     def getHint():
-        hinttxt['text'] = hint(32)
+        hintNum = random.randrange(1, 49)
+        hinttxt['text'] = hint(hintNum)
 
     # Create the main application window
     root = tk.Tk()
@@ -207,30 +217,35 @@ def userGUILoop():
     tabControl.pack(expand=1, fill="both")
 
     #Main Tab
-    username = tk.StringVar()
-    name = ttk.Entry(main_tab, textvariable=username)
-    startrando_button = ttk.Button(main_tab, text="Start Randomizer", command=startRando)
+    name = ttk.Entry(main_tab)
+    startrando_button = ttk.Button(main_tab, text="Start Randomizer", command=lambda: startRando(name.get()))
+    lastUnlockedItemtxt = ttk.Label(main_tab, text=lastUnlockedItem)
+
     name.pack()
     startrando_button.pack()
+    lastUnlockedItemtxt.pack()
 
     #Warp Tab
-    warp0_button = ttk.Button(warp_tab, text="Quality Square", command=partial(change_saved_location, 0))
-    warp1_button = ttk.Button(warp_tab, text="Grass Land", command=partial(change_saved_location, 1))
-    warp2_button = ttk.Button(warp_tab, text="Hot Land", command=partial(change_saved_location, 2))
-    warp3_button = ttk.Button(warp_tab, text="Treat Land", command=partial(change_saved_location, 3))
-    warp4_button = ttk.Button(warp_tab, text="Water Land", command=partial(change_saved_location, 4))
-    warp5_button = ttk.Button(warp_tab, text="Snow Land", command=partial(change_saved_location, 5))
-    warp6_button = ttk.Button(warp_tab, text="Space Land", command=partial(change_saved_location, 6))
-    warp7_button = ttk.Button(warp_tab, text="Dream Land", command=partial(change_saved_location, 7))
+    warpWarp = ttk.Label(warp_tab, text="Warning: Before pressing any of these buttons exit fully to the title screen!\n"
+                                        "Failer to do so WILL corrupt your save file and/or your Wii system memory!")
+    warp0_button = ttk.Button(warp_tab, text="Quality Square", command=lambda: change_saved_location(0))
+    warp1_button = ttk.Button(warp_tab, text="Grass Land", command=lambda: change_saved_location(1))
+    warp2_button = ttk.Button(warp_tab, text="Hot Land", command=lambda: change_saved_location(2))
+    warp3_button = ttk.Button(warp_tab, text="Treat Land", command=lambda: change_saved_location(3))
+    warp4_button = ttk.Button(warp_tab, text="Water Land", command=lambda: change_saved_location(4))
+    warp5_button = ttk.Button(warp_tab, text="Snow Land", command=lambda: change_saved_location(5))
+    warp6_button = ttk.Button(warp_tab, text="Space Land", command=lambda: change_saved_location(6))
+    warp7_button = ttk.Button(warp_tab, text="Dream Land", command=lambda: change_saved_location(7))
 
-    warp0_button.grid(row=0, column=0)
-    warp1_button.grid(row=0, column=1)
-    warp2_button.grid(row=0, column=2)
-    warp3_button.grid(row=0, column=3)
-    warp4_button.grid(row=1, column=0)
-    warp5_button.grid(row=1, column=1)
-    warp6_button.grid(row=1, column=2)
-    warp7_button.grid(row=1, column=3)
+    warpWarp.grid(row=0, columnspan=3)
+    warp0_button.grid(row=1, column=0)
+    warp1_button.grid(row=1, column=1)
+    warp2_button.grid(row=1, column=2)
+    warp3_button.grid(row=1, column=3)
+    warp4_button.grid(row=2, column=0)
+    warp5_button.grid(row=2, column=1)
+    warp6_button.grid(row=2, column=2)
+    warp7_button.grid(row=2, column=3)
 
     #Hint Tab
     hinttxt = ttk.Label(hint_tab, text="Hint")
@@ -244,7 +259,7 @@ def userGUILoop():
     seedtxt.pack()
 
     # Run the application
-    updateSeed()
+    updateText()
     root.mainloop()
 
 #--------------------------------------------------------------------------
