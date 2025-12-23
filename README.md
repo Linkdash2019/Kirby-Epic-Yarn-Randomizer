@@ -36,11 +36,20 @@ While your here have some info (don't worry if you don't understand it):
 
 ### Important Memory Values
 #### Cutscenes:
-* 0x906A962B - Welcome to Dreamland (Memory)
+* 0x906A962B - Patch Land (Flick)
 * 0x906A96F7 - Welcome to Patchland (Dialog)
+* 0x906A9637 - A Close Call (Flick)
 * 0x906A973F - Meet Dom Whoole (Dialog)
 * 0x906A971B - See Kirbys Pad (Dialog)
 * 0x906A96EB - To Grass Land (Dialog)
+* 0x906A9643 - Grumble, Grumble... (Flick)
+* 0x906A964F - Sinister Designs (Flick)
+* 0x906A965B - Bon Appetit! (Flick)
+* 0x906A9667 - All Wrapped Up (Flick)
+* 0x906A9673 - Ambushed! (Flick)
+* 0x906A967F - To Dream Land! (Flick)
+* 0x906A962B - Until Then! (Flick)
+* 0x906A968B - All Flicks (Flick)
 
 #### Doors:
 * 0x906A7067 - Patch Castle
