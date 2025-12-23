@@ -55,3 +55,4 @@ While your here have some info (don't worry if you don't understand it):
 #### Misc:
 * 0x906A7007 - World Map unlock status
 * 0x906A700C - Kirby Location
+* 0x906A6C4F - Save file in use

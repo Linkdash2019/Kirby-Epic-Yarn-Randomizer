@@ -105,7 +105,10 @@ def setup():
         change_saved_location(6)
     elif hops <= 49:
         change_saved_location(7)
-    
+
+def setSelectedFile(fileNum):
+    dme.write_byte(0x906A6C4F, fileNum)
+
 def check_medals(hops=0):
     offset = 8
     level_offset = 36
@@ -167,17 +170,17 @@ def backgroundLoop():
     while not exitEvent.is_set():
         if (dme.read_bytes(0x906A7010, 4) == b'ROOM') & (locationRadioButton == 'inLevel'):
             locationRadioButton = 'onMap'
+            change_saved_location(0x00)
             check_doors()
         elif (dme.read_bytes(0x906A7010, 4) != b'ROOM') & (locationRadioButton == 'onMap'):
             locationRadioButton = 'inLevel'
+            change_saved_location(0x00)
         else:
             time.sleep(1)
     print("Background loop finished")
 
 #TODO Add seed selection.
 #     Finish hints
-#     Move Setup() to startRando()
-#     Move dme.hook to backgroundLoop()
 def userGUILoop():
 
     def updateSeed():
