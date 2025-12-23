@@ -63,7 +63,19 @@ def setup():
 
     #Watch Cutscenes
     #Refer to GitHub for more info
+
+    #Cutscenes (Also known as 'Flicks')
     dme.write_byte(0x906A962B, 0x03)
+    dme.write_byte(0x906A9637, 0x03)
+    dme.write_byte(0x906A9643, 0x03)
+    dme.write_byte(0x906A964F, 0x03)
+    dme.write_byte(0x906A965B, 0x03)
+    dme.write_byte(0x906A9667, 0x03)
+    dme.write_byte(0x906A9673, 0x03)
+    dme.write_byte(0x906A967F, 0x03)
+    dme.write_byte(0x906A962B, 0x03)
+    dme.write_byte(0x906A968B, 0x03)
+    #Dialogs
     dme.write_byte(0x906A96F7, 0x03)
     dme.write_byte(0x906A973F, 0x03)
     dme.write_byte(0x906A971B, 0x03)
