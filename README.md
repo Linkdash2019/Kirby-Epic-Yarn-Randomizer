@@ -48,8 +48,7 @@ While your here have some info (don't worry if you don't understand it):
 * 0x906A9667 - All Wrapped Up (Flick)
 * 0x906A9673 - Ambushed! (Flick)
 * 0x906A967F - To Dream Land! (Flick)
-* 0x906A962B - Until Then! (Flick)
-* 0x906A968B - All Flicks (Flick)
+* 0x906A968B - Until Then! (Flick)
 
 #### Doors:
 * 0x906A7067 - Patch Castle
