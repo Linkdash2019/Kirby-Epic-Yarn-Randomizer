@@ -51,7 +51,6 @@ def seedGen(setSeed=str(int(time.time()))):
     global firstItem
     firstItem = items.pop(0)
 
-#TODO Finish finding all cutscenes
 def setup():
     #Unlock Badges
     hops = 0
@@ -63,8 +62,11 @@ def setup():
 
     #Watch Cutscenes
     #Refer to GitHub for more info
-
+    #
     #Cutscenes (Also known as 'Flicks')
+    ### Even though we unlock every cutscene
+    ### the game will always play the cutscene if
+    ### you entered the level with a status of 0x02
     dme.write_byte(0x906A962B, 0x03)
     dme.write_byte(0x906A9637, 0x03)
     dme.write_byte(0x906A9643, 0x03)
@@ -73,8 +75,8 @@ def setup():
     dme.write_byte(0x906A9667, 0x03)
     dme.write_byte(0x906A9673, 0x03)
     dme.write_byte(0x906A967F, 0x03)
-    dme.write_byte(0x906A962B, 0x03)
     dme.write_byte(0x906A968B, 0x03)
+
     #Dialogs
     dme.write_byte(0x906A96F7, 0x03)
     dme.write_byte(0x906A973F, 0x03)
@@ -142,7 +144,7 @@ def check_doors():
     hops = 0
     offset = 0
     level_offset = 36
-    
+
     while hops <= 49:
         if dme.read_byte(0x906A7067+(hops*level_offset)+offset) == 3:
             unlockNextLevel(hops)
@@ -172,9 +174,28 @@ def unlockNextLevel(hops):
             return
         unlock_hops += 1
 
-#TODO lock levels that shouldn't be unlocked.
 def relockTrouble():
-    pass
+    hops = 1
+    if dme.read_byte(0x906A7067+(hops*36)) == 0x02:
+        dme.write_byte(0x906A7067+(hops*36), 0x01)
+    hops = 7
+    if dme.read_byte(0x906A7067 + (hops * 36)) == 0x02:
+        dme.write_byte(0x906A7067 + (hops * 36), 0x01)
+    hops = 13
+    if dme.read_byte(0x906A7067 + (hops * 36)) == 0x02:
+        dme.write_byte(0x906A7067 + (hops * 36), 0x01)
+    hops = 19
+    if dme.read_byte(0x906A7067 + (hops * 36)) == 0x02:
+        dme.write_byte(0x906A7067 + (hops * 36), 0x01)
+    hops = 25
+    if dme.read_byte(0x906A7067 + (hops * 36)) == 0x02:
+        dme.write_byte(0x906A7067 + (hops * 36), 0x01)
+    hops = 31
+    if dme.read_byte(0x906A7067 + (hops * 36)) == 0x02:
+        dme.write_byte(0x906A7067 + (hops * 36), 0x01)
+    hops = 37
+    if dme.read_byte(0x906A7067 + (hops * 36)) == 0x02:
+        dme.write_byte(0x906A7067 + (hops * 36), 0x01)
 
 def hint(levelNum):
     unlock_hops = 0
@@ -194,6 +215,7 @@ def backgroundLoop():
         if (dme.read_bytes(0x906A7010, 4) == b'ROOM') & (locationRadioButton == 'inLevel'):
             locationRadioButton = 'onMap'
             setSelectedFile(0x00)
+            relockTrouble()
             check_doors()
         elif (dme.read_bytes(0x906A7010, 4) != b'ROOM') & (locationRadioButton == 'onMap'):
             locationRadioButton = 'inLevel'
@@ -267,7 +289,6 @@ def userGUILoop():
 
     #Info Tab
     seedtxt = ttk.Label(info_tab, text=f"Seed: {seed}")
-
     seedtxt.pack()
 
     # Run the application
