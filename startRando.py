@@ -40,6 +40,7 @@ def seedGen(setSeed=str(int(time.time()))):
 
 def setup():
     from background import change_saved_location
+
     #Unlock Badges
     hops = 0
     offset = 12
@@ -71,8 +72,8 @@ def setup():
     dme.write_byte(0x906A971B, 0x03)
     dme.write_byte(0x906A96EB, 0x03)
 
-    #Unlock Map
-    dme.write_byte(0x906A7007, 0x10)
+    #Unlock Map (0x10) Unlock Magic Sock (0x14)
+    dme.write_byte(0x906A7007, 0x14)
 
     #Unlock First Level
     hops = 0
