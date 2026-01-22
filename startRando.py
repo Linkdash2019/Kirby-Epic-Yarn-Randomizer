@@ -75,6 +75,14 @@ def setup():
     #Unlock Map (0x10) Unlock Magic Sock (0x14)
     dme.write_byte(0x906A7007, 0x14)
 
+    #Give every apartment an owner
+    #(To unlock only Kirby's pad do x00 x82)
+    dme.write_bytes(0x906A7005, b"\xFF\xFF")
+
+    #Unlock shops
+    dme.write_byte(0x906A7002, 0x01) #Show merchants
+    dme.write_byte(0x906A7007, 0xFF) #Unlock "Doors"
+
     #Unlock First Level
     hops = 0
     for item in variableManagment.unrandom_items:

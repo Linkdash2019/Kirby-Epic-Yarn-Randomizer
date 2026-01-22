@@ -1,6 +1,9 @@
 import random
 import tkinter as tk
 from tkinter import ttk
+import chestTest
+import dolphin_memory_engine
+
 import variableManagment
 
 def hint(levelNum):
@@ -23,6 +26,9 @@ def userGUILoop(startRando, change_saved_location):
     def getHint():
         hintNum = random.randrange(1, 49)
         hinttxt['text'] = hint(hintNum)
+
+    def testDebug():
+        chestTest.test()
 
     # Create the main application window
     root = tk.Tk()
@@ -80,6 +86,9 @@ def userGUILoop(startRando, change_saved_location):
     #Info Tab
     seedtxt = ttk.Label(info_tab, text=f"Seed: {variableManagment.seed}")
     seedtxt.pack()
+
+    debugBtn = ttk.Button(info_tab, text="Debug", command=testDebug)
+    debugBtn.pack()
 
     # Run the application
     updateText()
