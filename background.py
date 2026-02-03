@@ -78,7 +78,7 @@ def backgroundLoop(exitEvent):
         if (dme.read_bytes(0x906A7010, 4) == b'ROOM') & (locationRadioButton == 'inLevel'):
             locationRadioButton = 'onMap'
             setSelectedFile(0x00)
-            relockTrouble()
+            #relockTrouble()
             check_doors()
         elif (dme.read_bytes(0x906A7010, 4) != b'ROOM') & (locationRadioButton == 'onMap'):
             locationRadioButton = 'inLevel'
