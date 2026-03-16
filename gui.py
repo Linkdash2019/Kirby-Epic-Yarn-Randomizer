@@ -90,7 +90,7 @@ def userGUILoop(startRando, change_saved_location):
 
     optionstxt.pack()
     shuffleDoorCheck.pack()
-    shuffleChestCheck.pack()
+    #shuffleChestCheck.pack()
 
     #Hint Tab
     hinttxt = ttk.Label(hint_tab, text="Hint")
