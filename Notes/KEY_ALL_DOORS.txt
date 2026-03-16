@@ -1,0 +1,59 @@
+Door Entrances (In order of how the appear in memory):
+  Patch Castle
+
+  Fountain Gardens
+  Flower Fields
+  Rainbow Falls
+  Big-Bean Vine
+  Mole Hole
+  Weird Woods
+
+  Pyramid Sands
+  Lava Landing
+  Cool Cave
+  Dino Jungle
+  Temper Temple
+  Dusk Dunes
+
+  Toy Tracks
+  Mushroom Run
+  Sweets Park
+  Melody Town
+  Cocoa Station
+  Dark Manor
+
+  Splash Beach
+  Blub-Blub Ocean
+  Secret Island
+  Deep-Dive Deep
+  Boom Boatyard
+  Fossil Reef
+
+  Snowy Fields
+  Cozy Cabin
+  Mt. Slide
+  Frosty Wheel
+  Frigid Fjords
+  Evergreen Lift
+
+  Future City
+  Tube Town
+  Mysterious UFO
+  Stellar Way
+  Moon Base
+  Outer Rings
+
+  Whispy's Forest
+  Tempest Towers
+  Cloud Palace
+  Castle Dedede
+  Meta Melon Isle
+  Battleship Halberd
+
+  Fangora
+  Hot Wings
+  Squashini
+  Capamari
+  King Dedede
+  Meta Knight
+  Yin-Yarn

@@ -12,7 +12,7 @@ def hint(levelNum):
     levelName = variableManagment.unrandom_items[levelNum]
     for item in variableManagment.items:
         if item == levelName:
-            saying = f"They say {variableManagment.unrandom_items[levelNum]} is unlocked by {variableManagment.locations[unlock_hops]}"
+            saying = f"They say {variableManagment.unrandom_items[levelNum]} is unlocked by {list(variableManagment.locations.keys())[unlock_hops]}"
             break
         unlock_hops += 1
     return saying
@@ -28,20 +28,23 @@ def userGUILoop(startRando, change_saved_location):
         hinttxt['text'] = hint(hintNum)
 
     def testDebug():
-        chestTest.test()
+        pass
 
     # Create the main application window
     root = tk.Tk()
     root.title("Kirby Epic Yarn Randomizer")
+    root.geometry("400x100")
     tabControl = ttk.Notebook(root)
 
     main_tab = ttk.Frame(tabControl)
     warp_tab = ttk.Frame(tabControl)
+    options_tab = ttk.Frame(tabControl)
     hint_tab = ttk.Frame(tabControl)
     info_tab = ttk.Frame(tabControl)
 
     tabControl.add(main_tab, text='Main')
-    tabControl.add(warp_tab, text='Warp')
+    #tabControl.add(warp_tab, text='Warp')
+    tabControl.add(options_tab, text='Options')
     tabControl.add(hint_tab, text='Hint')
     tabControl.add(info_tab, text='Info')
     tabControl.pack(expand=1, fill="both")
@@ -77,6 +80,18 @@ def userGUILoop(startRando, change_saved_location):
     warp6_button.grid(row=2, column=2)
     warp7_button.grid(row=2, column=3)
 
+    #Options Tab
+    shuffleDoors_var = tk.BooleanVar(value=variableManagment.shuffleDoors)
+    shuffleChests_var = tk.BooleanVar(value=variableManagment.shuffleChests)
+    
+    optionstxt = ttk.Label(options_tab, text="Options")
+    shuffleDoorCheck = ttk.Checkbutton(options_tab, text="Shuffle Doors", variable=shuffleDoors_var, command=lambda: setattr(variableManagment, 'shuffleDoors', shuffleDoors_var.get()))
+    shuffleChestCheck = ttk.Checkbutton(options_tab, text="Shuffle Chests", variable=shuffleChests_var, command=lambda: setattr(variableManagment, 'shuffleChests', shuffleChests_var.get()))
+
+    optionstxt.pack()
+    shuffleDoorCheck.pack()
+    shuffleChestCheck.pack()
+
     #Hint Tab
     hinttxt = ttk.Label(hint_tab, text="Hint")
     getHint_button = ttk.Button(hint_tab, text="Get Hint", command=getHint)
@@ -87,8 +102,8 @@ def userGUILoop(startRando, change_saved_location):
     seedtxt = ttk.Label(info_tab, text=f"Seed: {variableManagment.seed}")
     seedtxt.pack()
 
-    debugBtn = ttk.Button(info_tab, text="Debug", command=testDebug)
-    debugBtn.pack()
+   # debugBtn = ttk.Button(info_tab, text="Debug", command=testDebug)
+   # debugBtn.pack()
 
     # Run the application
     updateText()

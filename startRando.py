@@ -2,9 +2,9 @@ import random
 import time
 import dolphin_memory_engine as dme
 from tkinter import messagebox
-import variableManagment
+import variableManagment as var
+import shuffle
 
-# These are references to globals from main.py
 background_thread = None
 
 def startRando(inputSeed=""):
@@ -15,28 +15,20 @@ def startRando(inputSeed=""):
 
     if inputSeed == "":
         #Random Seed
-        seedGen()
+        shuffle.shuffle()
     else:
         #Set Seed
-        seedGen(inputSeed)
+        shuffle.shuffle(inputSeed)
 
     # Check if file 1 is probably empty
     if dme.read_byte(0x906A962B) == dme.read_byte(0x906A96F7) == 0x01:
-        variableManagment.lastUnlockedItem = "Running setup"
+        var.lastUnlockedItem = "Running setup"
         setup()
     else:
-        variableManagment.lastUnlockedItem = "Save found on file 1\nResuming randomizer"
+        var.lastUnlockedItem = "Save file found on file 1\nResuming randomizer"
 
-    # Spoiler Maker
-    item_placement = dict(zip(variableManagment.locations, variableManagment.items))
-
+    print(var.spoiler)
     background_thread.start()
-
-def seedGen(setSeed=str(int(time.time()))):
-    variableManagment.seed = setSeed
-    random.seed(setSeed)
-    random.shuffle(variableManagment.items)
-    variableManagment.firstItem = variableManagment.items.pop(0)
 
 def setup():
     from background import change_saved_location
@@ -85,10 +77,17 @@ def setup():
 
     #Unlock First Level
     hops = 0
-    for item in variableManagment.unrandom_items:
-        if item == variableManagment.firstItem:
-            dme.write_byte(0x906A7067+(hops*36), 0x02)
-            variableManagment.lastUnlockedItem = f'START unlocked {item}'
+    for item in var.doorItems:
+        if item == var.spoiler['Start']:
+            if item == 'Patch Castle': var.pcUnlock = True
+            elif item == 'Fangora': var.boss1Unlock = True
+            elif item == 'Hot Wings': var.boss2Unlock = True
+            elif item == 'Squashini': var.boss3Unlock = True
+            elif item == 'Capamari': var.boss4Unlock = True
+            elif item == 'King Dedede': var.boss5Unlock = True
+            elif item == 'Meta Knight': var.boss6Unlock = True
+            else: dme.write_byte(0x906A7067+(hops*36), 0x02)
+            var.lastUnlockedItem = f'Fluffs gift is {var.spoiler['Start']}'
             break
         hops += 1
 
@@ -125,3 +124,12 @@ def setup():
         change_saved_location(6)
     elif hops <= 49:
         change_saved_location(7)
+
+    #Unlock all boss doors + patch castle
+    dme.write_byte(0x906A7067 + (0 * 36), 0x03)
+    dme.write_byte(0x906A7067 + (43 * 36), 0x03)
+    dme.write_byte(0x906A7067 + (44 * 36), 0x03)
+    dme.write_byte(0x906A7067 + (45 * 36), 0x03)
+    dme.write_byte(0x906A7067 + (46 * 36), 0x03)
+    dme.write_byte(0x906A7067 + (47 * 36), 0x03)
+    dme.write_byte(0x906A7067 + (48 * 36), 0x03)
