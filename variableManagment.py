@@ -1,4 +1,4 @@
-nothingItem = ['Yin-Yarn']
+nothingItem = ['Beads-10']
 
 doorItems = [
     'Patch Castle', #Quilty Square
