@@ -73,15 +73,31 @@ chestItems = [
 startLocation = {'Start':[]}
 
 doorLocations = {
-    'Patch Castle Goal':[],
-    'Fountain Gardens Goal':[], 'Flower Fields Goal':[], 'Rainbow Falls Goal':[], 'Big-Bean Vine Goal':[], 'Mole Hole Goal':[], 'Weird Woods Goal':[],
-    'Pyramid Sands Goal':[], 'Lava Landing Goal':[], 'Cool Cave Goal':[], 'Dino Jungle Goal':[], 'Temper Temple Goal':[], 'Dusk Dunes Goal':[],
-    'Toy Tracks Goal':[], 'Mushroom Run Goal':[], 'Sweets Park Goal':[], 'Melody Town Goal':[], 'Cocoa Station Goal':[], 'Dark Manor Goal':[],
-    'Splash Beach Goal':[], 'Blub-Blub Ocean Goal':[], 'Secret Island Goal':[], 'Deep-Dive Deep Goal':[], 'Boom Boatyard Goal':[], 'Fossil Reef Goal':[],
-    'Snowy Fields Goal':[], 'Cozy Cabin Goal':[], 'Mt. Slide Goal':[], 'Frosty Wheel Goal':[], 'Frigid Fjords Goal':[], 'Evergreen Lift Goal':[],
-    'Future City Goal':[], 'Tube Town Goal':[], 'Mysterious UFO Goal':[], 'Stellar Way Goal':[], 'Moon Base Goal':[], 'Outer Rings Goal':[],
-    "Whispy's Forest":[], 'Tempest Towers Goal':[], 'Cloud Palace Goal':[], 'Castle Dedede Goal':[], 'Meta Melon Isle Goal':[], 'Battleship Halberd Goal':[],
-    'Fangora Goal':[], 'Hot Wings Goal':[], 'Squashini Goal':[], 'Capamari Goal':[], 'King Dedede Goal':[], 'Meta Knight Goal':[]
+    'Patch Castle Goal':['Patch Castle'],
+
+    'Fountain Gardens Goal':['Fountain Gardens'], 'Flower Fields Goal':['Flower Fields'], 'Rainbow Falls Goal':['Rainbow Falls'], 
+    'Big-Bean Vine Goal':['Big-Bean Vine'], 'Mole Hole Goal':['Mole Hole'], 'Weird Woods Goal':['Weird Woods'],
+
+    'Pyramid Sands Goal':['Pyramid Sands'], 'Lava Landing Goal':['Lava Landing'], 'Cool Cave Goal':['Cool Cave'], 
+    'Dino Jungle Goal':['Dino Jungle'], 'Temper Temple Goal':['Temper Temple'], 'Dusk Dunes Goal':['Dusk Dunes'],
+
+    'Toy Tracks Goal':['Toy Tracks'], 'Mushroom Run Goal':['Mushroom Run'], 'Sweets Park Goal':['Sweets Park'], 
+    'Melody Town Goal':['Melody Town'], 'Cocoa Station Goal':['Cocoa Station'], 'Dark Manor Goal':['Dark Manor'],
+
+    'Splash Beach Goal':['Splash Beach'], 'Blub-Blub Ocean Goal':['Blub-Blub Ocean'], 'Secret Island Goal':['Secret Island'], 
+    'Deep-Dive Deep Goal':['Deep-Dive Deep'], 'Boom Boatyard Goal':['Boom Boatyard'], 'Fossil Reef Goal':['Fossil Reef'],
+
+    'Snowy Fields Goal':['Snowy Fields'], 'Cozy Cabin Goal':['Cozy Cabin'], 'Mt. Slide Goal':['Mt. Slide'], 
+    'Frosty Wheel Goal':['Frosty Wheel'], 'Frigid Fjords Goal':['Frigid Fjords'], 'Evergreen Lift Goal':['Evergreen Lift'],
+
+    'Future City Goal':['Future City'], 'Tube Town Goal':['Tube Town'], 'Mysterious UFO Goal':['Mysterious UFO'], 
+    'Stellar Way Goal':['Stellar Way'], 'Moon Base Goal':['Moon Base'], 'Outer Rings Goal':['Outer Rings'],
+
+    "Whispy's Forest Goal":["Whispy's Forest"], 'Tempest Towers Goal':['Tempest Towers'], 'Cloud Palace Goal':['Cloud Palace'], 
+    'Castle Dedede Goal':['Castle Dedede'], 'Meta Melon Isle Goal':['Meta Melon Isle'], 'Battleship Halberd Goal':['Battleship Halberd'],
+
+    'Fangora Goal':['Fangora'], 'Hot Wings Goal':['Hot Wings'], 'Squashini Goal':['Squashini'], 
+    'Capamari Goal':['Capamari'], 'King Dedede Goal':['King Dedede'], 'Meta Knight Goal':['Meta Knight']
 }
 
 chestLocations = {
