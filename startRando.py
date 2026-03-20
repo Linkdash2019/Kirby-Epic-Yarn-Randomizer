@@ -1,16 +1,24 @@
 import random
 import time
 import dolphin_memory_engine as dme
+import tkinter as tk
 from tkinter import messagebox
 import variableManagment as var
 import shuffle
+import gui
 
 background_thread = None
+
+def change_saved_location(world=0):
+    #We craft a string because it's easier.
+    #The string then gets converted to bytes
+    string = f'A00{world}ROOMNONE'
+    dme.write_bytes(0x906A700C, string.encode('ascii'))
 
 def startRando(inputSeed=""):
     dme.hook()
     if not dme.is_hooked():
-        messagebox.showerror("Error", "Could not hook Dolphin.\nCheck that Kirby Epic Yarn is running and try again.")
+        tk.messagebox.showerror("Error", "Could not hook Dolphin.\nCheck that Kirby Epic Yarn is running and try again.")
         return
 
     if inputSeed == "":
@@ -22,17 +30,28 @@ def startRando(inputSeed=""):
 
     # Check if file 1 is probably empty
     if dme.read_byte(0x906A962B) == dme.read_byte(0x906A96F7) == 0x01:
-        var.lastUnlockedItem = "Running setup"
-        setup()
+        gui.lastUnlockedLog.config(state='normal')
+        gui.lastUnlockedLog.insert(tk.INSERT, "Running setup...\n")
+        gui.lastUnlockedLog.config(state='disabled')
+        if var.shuffleDoors == True:
+            setup()
+        gui.lastUnlockedLog.config(state='normal')
+        gui.lastUnlockedLog.insert(tk.INSERT, "Done!\n")
+        gui.lastUnlockedLog.insert(tk.INSERT, "Seed is " + var.seed + "\n")
+        gui.lastUnlockedLog.insert(tk.INSERT, f'Fluffs gift is {var.spoiler['Start']}\n')
+        gui.lastUnlockedLog.config(state='disabled')
     else:
-        var.lastUnlockedItem = "Save file found on file 1\nResuming randomizer"
+        gui.lastUnlockedLog.config(state='normal')
+        gui.lastUnlockedLog.insert(tk.INSERT, "Save found on file 1, resuming randomizer\n")
+        gui.lastUnlockedLog.config(state='disabled')
 
     print(var.spoiler)
+    gui.startrando_button.config(state='disabled')
+    for wiget in gui.options_tab.winfo_children():
+        wiget.config(state='disabled')
     background_thread.start()
 
 def setup():
-    from background import change_saved_location
-
     #Unlock Badges
     hops = 0
     offset = 12
@@ -87,7 +106,6 @@ def setup():
             elif item == 'King Dedede': var.boss5Unlock = True
             elif item == 'Meta Knight': var.boss6Unlock = True
             else: dme.write_byte(0x906A7067+(hops*36), 0x02)
-            var.lastUnlockedItem = f'Fluffs gift is {var.spoiler['Start']}'
             break
         hops += 1
 

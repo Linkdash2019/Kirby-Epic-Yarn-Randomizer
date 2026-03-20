@@ -10,5 +10,5 @@ background_thread = threading.Thread(target=background.backgroundLoop, args=(exi
 startRando.background_thread = background_thread
 
 # Start the GUI
-gui.userGUILoop(startRando.startRando, background.change_saved_location)
+gui.userGUILoop(startRando.startRando)
 exitEvent.set()

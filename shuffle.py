@@ -35,13 +35,11 @@ def shuffle(setSeed=str(int(time.time()))):
                 if var.spoiler[location] is None:  
                     if all(req in placed_items for req in requirements):
                         accessible_locations.append(location)
-            print(f"Accessible locations: {accessible_locations}")
 
        
             if not accessible_locations and 'Yin-Yarn' not in placed_items:
                 #Undo last item placment
                 var.spoiler[lastSuccess[0]] = None
-                print(f"Undoing placement of {lastSuccess[1]} at {lastSuccess[0]} to ensure 'Yin-Yarn' can be placed")
                 items_to_place.append(lastSuccess[1])
                 placed_items.remove(lastSuccess[1])
                 continue
@@ -50,8 +48,6 @@ def shuffle(setSeed=str(int(time.time()))):
             if not accessible_locations:
                 #Place current item in random slot
                 accessible_locations = [loc for loc, item in var.spoiler.items() if item is None]
-                print("Forced everywhere to be accessible")
-
             if not accessible_locations:
                 break
 

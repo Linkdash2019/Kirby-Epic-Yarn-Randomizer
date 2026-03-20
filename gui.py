@@ -1,96 +1,75 @@
 import random
 import tkinter as tk
 from tkinter import ttk
-import chestTest
+import tkinter.scrolledtext as st
 import dolphin_memory_engine
 
-import variableManagment
+import variableManagment as var
 
-def hint(levelNum):
-    unlock_hops = 0
-    saying = "Out of bounds error"
-    levelName = variableManagment.unrandom_items[levelNum]
-    for item in variableManagment.items:
-        if item == levelName:
-            saying = f"They say {variableManagment.unrandom_items[levelNum]} is unlocked by {list(variableManagment.locations.keys())[unlock_hops]}"
-            break
-        unlock_hops += 1
-    return saying
+options_tab = None
+lastUnlockedLog = None
+startrando_button = None
 
-def userGUILoop(startRando, change_saved_location):
+
+def hint():
+    choice = random.choice(list(var.spoiler.keys()))
+    return f"{choice} unlocks {var.spoiler[choice]}"
+
+def userGUILoop(startRando):
     def updateText():
-        lastUnlockedItemtxt['text'] = variableManagment.lastUnlockedItem
-        seedtxt['text'] = f"Seed: {variableManagment.seed}"
+        seedtxt['text'] = f"Seed: {var.seed}"
         root.after(100, updateText)
 
     def getHint():
         hintNum = random.randrange(1, 49)
-        hinttxt['text'] = hint(hintNum)
+        hinttxt['text'] = hint()
 
     def testDebug():
         pass
 
-    # Create the main application window
+    # Create the main window
     root = tk.Tk()
     root.title("Kirby Epic Yarn Randomizer")
-    root.geometry("400x100")
+    root.geometry("500x240")
+    root.resizable(False,False)
     tabControl = ttk.Notebook(root)
 
+    global options_tab
     main_tab = ttk.Frame(tabControl)
-    warp_tab = ttk.Frame(tabControl)
     options_tab = ttk.Frame(tabControl)
     hint_tab = ttk.Frame(tabControl)
     info_tab = ttk.Frame(tabControl)
-
     tabControl.add(main_tab, text='Main')
-    #tabControl.add(warp_tab, text='Warp')
     tabControl.add(options_tab, text='Options')
     tabControl.add(hint_tab, text='Hint')
     tabControl.add(info_tab, text='Info')
     tabControl.pack(expand=1, fill="both")
 
     #Main Tab
+    global startrando_button
+    global lastUnlockedLog 
     name = ttk.Entry(main_tab)
     startrando_button = ttk.Button(main_tab, text="Start Randomizer", command=lambda: startRando(name.get()))
-    lastUnlockedItemtxt = ttk.Label(main_tab, text=variableManagment.lastUnlockedItem)
+    
+    lastUnlockedLog = st.ScrolledText(main_tab, width=56, height=9)
+
+    lastUnlockedLog.config(state='disabled')
 
     name.pack()
     startrando_button.pack()
-    lastUnlockedItemtxt.pack()
-
-    #Warp Tab
-    warpWarp = ttk.Label(warp_tab, text="Warning: Before pressing any of these buttons exit fully to the title screen!\n"
-                                        "Failer to do so WILL corrupt your save file and/or your Wii system memory!")
-    warp0_button = ttk.Button(warp_tab, text="Quality Square", command=lambda: change_saved_location(0))
-    warp1_button = ttk.Button(warp_tab, text="Grass Land", command=lambda: change_saved_location(1))
-    warp2_button = ttk.Button(warp_tab, text="Hot Land", command=lambda: change_saved_location(2))
-    warp3_button = ttk.Button(warp_tab, text="Treat Land", command=lambda: change_saved_location(3))
-    warp4_button = ttk.Button(warp_tab, text="Water Land", command=lambda: change_saved_location(4))
-    warp5_button = ttk.Button(warp_tab, text="Snow Land", command=lambda: change_saved_location(5))
-    warp6_button = ttk.Button(warp_tab, text="Space Land", command=lambda: change_saved_location(6))
-    warp7_button = ttk.Button(warp_tab, text="Dream Land", command=lambda: change_saved_location(7))
-
-    warpWarp.grid(row=0, columnspan=3)
-    warp0_button.grid(row=1, column=0)
-    warp1_button.grid(row=1, column=1)
-    warp2_button.grid(row=1, column=2)
-    warp3_button.grid(row=1, column=3)
-    warp4_button.grid(row=2, column=0)
-    warp5_button.grid(row=2, column=1)
-    warp6_button.grid(row=2, column=2)
-    warp7_button.grid(row=2, column=3)
+    lastUnlockedLog.pack()
 
     #Options Tab
-    shuffleDoors_var = tk.BooleanVar(value=variableManagment.shuffleDoors)
-    shuffleChests_var = tk.BooleanVar(value=variableManagment.shuffleChests)
+    shuffleDoors_var = tk.BooleanVar(value=var.shuffleDoors)
+    shuffleChests_var = tk.BooleanVar(value=var.shuffleChests)
     
     optionstxt = ttk.Label(options_tab, text="Options")
-    shuffleDoorCheck = ttk.Checkbutton(options_tab, text="Shuffle Doors", variable=shuffleDoors_var, command=lambda: setattr(variableManagment, 'shuffleDoors', shuffleDoors_var.get()))
-    shuffleChestCheck = ttk.Checkbutton(options_tab, text="Shuffle Chests", variable=shuffleChests_var, command=lambda: setattr(variableManagment, 'shuffleChests', shuffleChests_var.get()))
+    shuffleDoorCheck = ttk.Checkbutton(options_tab, text="Shuffle Doors", variable=shuffleDoors_var, command=lambda: setattr(var, 'shuffleDoors', shuffleDoors_var.get()))
+    shuffleChestCheck = ttk.Checkbutton(options_tab, text="Shuffle Chests", variable=shuffleChests_var, command=lambda: setattr(var, 'shuffleChests', shuffleChests_var.get()))
 
     optionstxt.pack()
     shuffleDoorCheck.pack()
-    #shuffleChestCheck.pack()
+    shuffleChestCheck.pack()
 
     #Hint Tab
     hinttxt = ttk.Label(hint_tab, text="Hint")
@@ -99,7 +78,7 @@ def userGUILoop(startRando, change_saved_location):
     getHint_button.pack()
 
     #Info Tab
-    seedtxt = ttk.Label(info_tab, text=f"Seed: {variableManagment.seed}")
+    seedtxt = ttk.Label(info_tab, text=f"Seed: {var.seed}")
     seedtxt.pack()
 
    # debugBtn = ttk.Button(info_tab, text="Debug", command=testDebug)

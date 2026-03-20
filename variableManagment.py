@@ -164,7 +164,6 @@ unrandom_items = items[:]
 locations = {}
 
 seed = "0"
-lastUnlockedItem = "Not Initialized"
 spoiler = {}
 
 shuffleDoors = True
@@ -177,3 +176,4 @@ boss3Unlock = False
 boss4Unlock = False
 boss5Unlock = False
 boss6Unlock = False
+isBeaten = False
