@@ -1,4 +1,5 @@
-nothingItem = ['Beads-10']
+#Items
+nothingItem = ['Nothing']
 
 doorItems = [
     'Patch Castle', #Quilty Square
@@ -27,7 +28,7 @@ chestItems = [
     "Stone Lamp", "Cartoon Meat", "Lava Landing Soundtrack",
     "Crystal", "Frog Mirror", "Cool Cave Soundtrack",
     "Bronto Slide", "Torch", "Dino Jungle Soundtrack",
-    "Pyramid", "Camel Pillow", "Temper Temple Soundtrack",
+    "Pyramid", "Camel Pillow", "Quilty Square Soundtrack",
     "Magic Carpet", "Hourglass", "Dusk Dunes Soundtrack",
     #Treat Land
     "Stuffed Bear", "Tin Robot", "Toy Tracks Soundtrack",
@@ -54,7 +55,7 @@ chestItems = [
     "Space Monitor", "Space Table", "Future City Soundtrack",
     "Digital Clock", "Circuitry Rug", "Tube Town Soundtrack",
     "Communicator", "Space Food", "Space Land Soundtrack",
-    "Robot Bed", "Star Candy", "Steller Way Soundtrack",
+    "Robot Bed", "Star Candy", "Stellar Way Soundtrack",
     "Cosmic Bin", "Porthole", "Tankbot Soundtrack",
     "Saturn Stand", "Saturn Donuts", "Outer Rings Soundtrack",
     #Dream Land
@@ -63,13 +64,14 @@ chestItems = [
     "Cloud Rug", "Bubbly Soda", "Bubbly Clouds Soundtrack",
     "Castle Dedede", "Dedede's Robe", "Gourment Race Soundtrack",
     "Palm Chair", "Ice Cream", "Ice Cream Island Soundtrack",
-    "Galaxia Sword", "Knight Helmet", "Battleship Halberd Soundtrack",
+    "Galaxia Sword", "Knight Helmet", "Halberd Soundtrack",
     #Bosses
     "Fangora Soundtrack", "Hot Wings Soundtrack", "Squashini Soundtrack",
     "Capamari Soundtrack", "King Dedede Soundtrack", "Meta Knight Soundtrack"#,
     #"Yin-Yarn Soundtrack", "Dream Land Soundtrack", "Staff Credits Soundtrack"
 ]
 
+#Locations
 startLocation = {'Start':[]}
 
 doorLocations = {
@@ -163,11 +165,26 @@ items = []
 unrandom_items = items[:]
 locations = {}
 
+#Correct Disk Order
+diskOrder = [
+    'Quilty Square Soundtrack', 'Grass Land Soundtrack', 'Hot Land Soundtrack', 'Treat Land Soundtrack', 'Water Land Soundtrack', 'Snow Land Soundtrack', 'Space Land Soundtrack', 'Dream Land Soundtrack',
+    'Quilty Court Soundtrack', 'Patch Castle Soundtrack', 
+    'Fountain Gardens Soundtrack', 'Flower Fields Soundtrack', 'Rainbow Falls Soundtrack', 'Big-Bean Vine Soundtrack', 'Mole Hole Soundtrack', 'Weird Woods Soundtrack',
+    'Pyramid Sands Soundtrack', 'Lava Landing Soundtrack', 'Cool Cave Soundtrack', 'Dino Jungle Soundtrack', 'Dusk Dunes Soundtrack',
+    'Toy Tracks Soundtrack', 'Mushroom Run Soundtrack', 'Melody Town Soundtrack', 'Dark Manor Soundtrack', 
+    'Splash Beach Soundtrack', 'Secret Island Soundtrack', 'Blub-Blub Ocean Soundtrack', 'Deep-Dive Deep Soundtrack',
+    'Snowy Fields Soundtrack', 'Cozy Cabin Soundtrack', 'Mt. Slide Soundtrack', 'Frosty Wheel Soundtrack',
+    'Future City Soundtrack', 'Tube Town Soundtrack', 'Stellar Way Soundtrack', 'Tankbot Soundtrack', 'Outer Rings Soundtrack',
+    'Green Greens', 'Butter Building', 'Bubbly Clouds', 'Gourment Race', 'Ice Cream Island', 'Halberd',
+    'Fangora Soundtrack', 'Hot Wings Soundtrack', 'Squashini Soundtrack', 'Capamari Soundtrack', 'King Dedede Soundtrack', 'Meta Knight Soundtrack', 'Yin-Yarn Soundtrack',
+    'Staff Credits Soundtrack'
+]
+#Other Variables
 seed = "0"
 spoiler = {}
 
 shuffleDoors = True
-shuffleChests = False
+shuffleChests = True
 
 pcUnlock = False
 boss1Unlock = False

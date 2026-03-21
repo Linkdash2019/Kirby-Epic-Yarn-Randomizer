@@ -158,6 +158,56 @@ def unlockChests(item):
     else:
         return False
 
+def motifFix():
+    #Revert 'Motifs'
+    #Top row
+    loopNum = 0
+    while loopNum < 43:
+        dme.write_byte(0x906A80EF + (loopNum * 12), 0x00)
+        loopNum += 1
+
+    # Bottom row
+    loopNum = 0
+    while loopNum < 43:
+        dme.write_byte(0x906A80EF + (loopNum * 12) + (12 * 125), 0x00)
+        loopNum += 1
+
+    #Disks
+    loopNum = 0
+    while loopNum < 52:
+        dme.write_byte(0x906A8AC7 + (loopNum * 12), 0x00)
+        loopNum += 1
+
+    #Apply current 'Motifs'
+    for item in chestL:
+        hops = 0
+        tinyHops = 1
+        onlyDisk = False
+        for stuff in var.chestItems:
+            if item == stuff:
+                if tinyHops == 1 and not onlyDisk:
+                    dme.write_byte(0x906A80EF + (hops * 12), 0x01)
+                    break
+                if tinyHops == 2 and not onlyDisk:
+                    dme.write_byte(0x906A80EF + (hops * 12) + (12 * 125), 0x01)
+                    break
+                if tinyHops == 3 or onlyDisk:
+                    diskHops = 0
+                    for disk in var.diskOrder:
+                        if item == disk:
+                            dme.write_byte(0x906A8AC7 + (diskHops * 12), 0x01)
+                            break
+                        diskHops += 1   
+            else:
+                tinyHops += 1
+                if tinyHops == 4:
+                    hops+=1
+                    tinyHops = 1
+                    if hops >= 43:
+                        onlyDisk = True
+
+             
+
 def redirectBossDoors():
     # Patch Castle
     if var.pcUnlock: dme.write_bytes(0x906A7068, b"\x90\x6C\x3D\x10")
@@ -194,6 +244,7 @@ def backgroundLoop(exitEvent):
                 checkDoors()
             if var.shuffleChests:
                 checkChests()
+                motifFix()
         # When level entered
         elif (dme.read_bytes(0x906A7010, 4) != b'ROOM') & (locationRadioButton == 'onMap'):
             locationRadioButton = 'inLevel'
