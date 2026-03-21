@@ -32,6 +32,8 @@ def checkDoors():
                         var.isBeaten = True
                 else:
                     getItemToUnlock(var.spoiler[list(var.doorLocations.keys())[hops]], list(var.doorLocations.keys())[hops])
+                    if (hops >= 43) and (hops < 49):
+                        getItemToUnlock(var.spoiler[list(var.chestLocations.keys())[129+hops-43]], list(var.chestLocations.keys())[129+hops-43])
         hops += 1
 
 def checkChests():
@@ -204,9 +206,7 @@ def motifFix():
                     hops+=1
                     tinyHops = 1
                     if hops >= 43:
-                        onlyDisk = True
-
-             
+                        onlyDisk = True         
 
 def redirectBossDoors():
     # Patch Castle
